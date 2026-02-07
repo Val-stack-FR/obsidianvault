@@ -1,4 +1,4 @@
 ---
-{"dg-publish":true,"permalink":"/index/","tags":["gardenEntry"]}
+{"dg-publish":true,"permalink":"/","tags":["gardenEntry"]}
 ---
 

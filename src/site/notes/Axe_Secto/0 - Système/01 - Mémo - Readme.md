@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/axe-secto/0-systeme/01-memo-readme/","tags":["gardenEntry"]}
+{"dg-publish":true,"permalink":"/axe-secto/0-systeme/01-memo-readme/"}
 ---
 
 ## 1. Pourquoi Obsidian ?

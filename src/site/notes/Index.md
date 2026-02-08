@@ -1,8 +1,6 @@
 ---
-dg-publish: true
-dg-home: true
-permalink: /
-tags: gardenEntry
+{"dg-publish":true,"permalink":"/index/","tags":["gardenEntry"]}
 ---
 
-[[A1a1 - Commande et asservissement des systèmes complexes, analyse structurelle, théorie des graphes]]
+[[Axe_Secto/1 - A/1 - AX/A1X/A1aX/A1a1 - Commande et asservissement des systèmes complexes, analyse structurelle, théorie des graphes\|A1a1 - Commande et asservissement des systèmes complexes, analyse structurelle, théorie des graphes]]
+[[test\|test]]

@@ -1,0 +1,64 @@
+name: Fix Index Frontmatter
+
+on:
+  push:
+    paths:
+      - 'src/site/notes/Index.md'
+
+jobs:
+  fix-frontmatter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fix Index.md frontmatter
+        run: |
+          FILE="src/site/notes/Index.md"
+
+          if [ ! -f "$FILE" ]; then
+            echo "Index.md not found, skipping."
+            exit 0
+          fi
+
+          # Lire le contenu actuel
+          CONTENT=$(cat "$FILE")
+
+          # Extraire le JSON frontmatter (entre --- et ---)
+          FRONTMATTER=$(echo "$CONTENT" | sed -n '2p')
+
+          echo "Frontmatter actuel: $FRONTMATTER"
+
+          CHANGED=false
+
+          # Ajouter dg-home si absent
+          if ! echo "$FRONTMATTER" | grep -q '"dg-home"'; then
+            FRONTMATTER=$(echo "$FRONTMATTER" | sed 's/^{/{\"dg-home\":true,/')
+            CHANGED=true
+            echo "→ dg-home ajouté"
+          fi
+
+          # Corriger permalink /index/ → /
+          if echo "$FRONTMATTER" | grep -q '"/index/"'; then
+            FRONTMATTER=$(echo "$FRONTMATTER" | sed 's|"/index/"|"/"|')
+            CHANGED=true
+            echo "→ permalink corrigé de /index/ à /"
+          fi
+
+          if [ "$CHANGED" = true ]; then
+            # Reconstruire le fichier
+            BODY=$(echo "$CONTENT" | tail -n +4)
+            printf '%s\n%s\n%s\n%s' "---" "$FRONTMATTER" "---" "$BODY" > "$FILE"
+            echo "Frontmatter corrigé: $FRONTMATTER"
+          else
+            echo "Aucune correction nécessaire."
+          fi
+
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/site/notes/Index.md
+          git diff --cached --quiet && echo "Rien à commit" && exit 0
+          git commit -m "fix: auto-correct Index.md frontmatter (dg-home + permalink)"
+          git push
